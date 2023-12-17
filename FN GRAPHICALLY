@@ -1,0 +1,21 @@
+#WAP TO FIND GLOBAL OPTIMAL SOLUTION OF FN -10COS(PIx-2.2) GRAPHICALLY:
+
+import numpy as np
+import matplotlib.pyplot as plt
+def f(x):
+    return -10 * np.cos(np.pi*x - 2.2) + (x + 1.5) * x
+#Define the range of X values:
+x = np.linspace(-5, 5, 1000)
+#Plot the Function:
+plt.plot(x, f(x))
+#Find the global minimum:
+global_min = np.min(f(x))
+global_min_x = x[np.argmin(f(x))]
+#Plot the global minimum:
+plt.plot(global_min_x, global_min,"ro")
+#Add labels and title:
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.title ("Global optimal solution of f(x)")
+# Show the plot
+plt.show()
