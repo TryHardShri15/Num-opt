@@ -1,0 +1,38 @@
+class PDA:
+    def __init__(self):
+        self.stack = []  # Stack to manage symbols
+        self.state = "q0"  # Start state
+
+    def process(self, input_string):
+        for char in input_string:
+            if self.state == "q0":
+                if char == "a":
+                    self.stack.append("a")  # Push 'a' to the stack
+                elif char == "b":
+                    if self.stack and self.stack[-1] == "a":
+                        self.stack.pop()  # Pop 'a' for each 'b'
+                        self.state = "q1"  # Move to state q1
+                    else:
+                        return False  # Invalid transition
+                else:
+                    return False  # Invalid character
+            elif self.state == "q1":
+                if char == "b":
+                    if self.stack and self.stack[-1] == "a":
+                        self.stack.pop()  # Continue popping for 'b'
+                    else:
+                        return False  # Invalid transition
+                else:
+                    return False  # Invalid character
+        return self.state == "q1" and not self.stack  # Accept if stack is empty
+
+# Testing the PDA
+def main():
+    pda = PDA()
+    test_cases = ["aabb", "aaabbb", "ab", "abb", "aaaabbbb", ""]  # Test inputs
+    for test in test_cases:
+        result = pda.process(test)
+        print(f"Input: {test} -> {'Accepted' if result else 'Rejected'}")
+
+if __name__ == "__main__":
+    main()
