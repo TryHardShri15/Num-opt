@@ -1,0 +1,35 @@
+def main():
+    w = input("Enter a string: ")
+    State1(w, 0)
+    
+def State1(w, i):
+    print("State 1")
+    if i == len(w):
+        print("String is rejected") # No three consecutive 1's found
+        return
+    elif w[i] == '1':
+        State2(w, i+1)
+    else:
+        State1(w, i+1)
+        
+def State2(w, i):
+    print("State 2")
+    if i == len(w):
+        print("String is rejected") # No three consecutive 1's found
+        return
+    elif w[i] == '1':
+        State3(w, i+1)
+    else:
+        State1(w, i+1)
+        
+def State3(w, i):
+    print("State 3")
+    if i == len(w):
+        print("String is rejected") # No three consecutive 1's found
+        return
+    elif w[i] == '1':
+        print("String is accepted") # Three consecutive 1's found
+        return
+    else:
+        State1(w, i+1)
+main()
