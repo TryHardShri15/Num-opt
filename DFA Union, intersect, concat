@@ -1,44 +1,81 @@
-"""Union Of L1 and L2: """
+#include <iostream>
+#include <string>
+using namespace std;
 
-def main():
-    w = input("Enter a string: ")
-    if L1(w) or L2(w): # Union: either L1 or L2 accepts
-        print("String is accepted by Union of L1 and L2")
-    else:
-        print("String is rejected by Union of L1 and L2")
-def L1(w):
-    return len(w) >= 4 and w[:2] == w[-2:] # Language L1 condition
-def L2(w):
-    return w.startswith('a') and w.endswith('b') # Language L2 condition
-main()
+// Define the FA for L1: First two equal to last two
+bool languageL1(const string &input) {
+    if (input.length() < 4) return false;
+    return input.substr(0, 2) == input.substr(input.size() - 2);
+}
 
+// Define the FA for L2: a(a+b)*b
+bool languageL2(const string &input) {
+    string state = "q0";
+    for (size_t i = 0; i < input.size(); i++) {
+        char ch = input[i];
+        if (state == "q0" && ch == 'a') state = "q1";
+        else if (state == "q1" && i == input.size() - 1 && ch == 'b') state = "q2";
+        else if (state == "q1" && (ch == 'a' || ch == 'b')) state = "q1";
+        else state = "q_reject";
+    }
+    return state == "q2";
+}
 
-"""Intersection Of L1 and L2: """
+// Union of L1 and L2
+bool unionL1L2(const string &input) {
+    return languageL1(input) || languageL2(input);
+}
 
-def main():
-    w = input("Enter a string: ")
-    if L1(w) and L2(w): # Intersection: both L1 and L2 accept
-        print("String is accepted by Intersection of L1 and L2")
-    else:
-        print("String is rejected by Intersection of L1 and L2")
-def L1(w):
-    return len(w) >= 4 and w[:2] == w[-2:] # Language L1 condition
-def L2(w):
-    return w.startswith('a') and w.endswith('b') # Language L2 condition
-main()
+// Intersection of L1 and L2
+bool intersectionL1L2(const string &input) {
+    return languageL1(input) && languageL2(input);
+}
 
+// Concatenation of L1 and L2
+bool concatenationL1L2(const string &input1, const string &input2) {
+    return languageL1(input1) && languageL2(input2);
+}
 
-"""Concatenation Of L1 and L2: """
+int main() {
+    string input, input1, input2;
 
-def main():
-    w = input("Enter a string: ")
-    for i in range(1, len(w)): # Try splitting at every possible point
-        if L1(w[:i]) and L2(w[i:]): # First part in L1, second part in L2
-            print("String is accepted by Concatenation of L1 and L2")
-            return
-    print("String is rejected by Concatenation of L1 and L2")
-def L1(w):
-    return len(w) >= 4 and w[:2] == w[-2:] # Language L1 condition
-def L2(w):
-    return w.startswith('a') and w.endswith('b') # Language L2 condition
-main()
+    cout << "==== Finite Automata Simulation ====" << endl;
+
+    // Input for union and intersection
+    cout << "\nEnter a string to test UNION and INTERSECTION: ";
+    cin >> input;
+
+    // Testing union
+    cout << "\n--- Results for UNION and INTERSECTION ---" << endl;
+    cout << "Input for UNION/INTERSECTION: " << input << endl;
+    if (unionL1L2(input)) {
+        cout << "Union: Accepted" << endl;
+    } else {
+        cout << "Union: Rejected" << endl;
+    }
+
+    // Testing intersection
+    if (intersectionL1L2(input)) {
+        cout << "Intersection: Accepted" << endl;
+    } else {
+        cout << "Intersection: Rejected" << endl;
+    }
+
+    // Input for concatenation
+    cout << "\nEnter the first string for L1 (concatenation): ";
+    cin >> input1;
+    cout << "Enter the second string for L2 (concatenation): ";
+    cin >> input2;
+
+    // Testing concatenation
+    cout << "\n--- Results for CONCATENATION ---" << endl;
+    cout << "First string (L1): " << input1 << endl;
+    cout << "Second string (L2): " << input2 << endl;
+    if (concatenationL1L2(input1, input2)) {
+        cout << "Concatenation: Accepted" << endl;
+    } else {
+        cout << "Concatenation: Rejected" << endl;
+    }
+
+    return 0;
+}
