@@ -1,0 +1,62 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool turingMachine_ABC(string input) {
+    int i = 0;
+    int n = input.length();
+    
+    while (i < n) {
+        if (input[i] == 'a') {
+            // Mark 'a' as visited
+            input[i] = 'X';
+            
+            // Move right to find corresponding 'b'
+            int j = i + 1;
+            while (j < n && input[j] != 'b') {
+                j++;
+            }
+            
+            if (j == n) return false; // No matching 'b' found
+            // Mark 'b' as visited
+            input[j] = 'Y';
+            
+            // Move right to find corresponding 'c'
+            int k = j + 1;
+            while (k < n && input[k] != 'c') {
+                k++;
+            }
+            
+            if (k == n) return false; // No matching 'c' found
+            // Mark 'c' as visited
+            input[k] = 'Z';
+            
+            // Move back to the left to check the next 'a'
+            i = 0;
+        } else if (input[i] == 'X' || input[i] == 'Y' || input[i] == 'Z') {
+            i++;
+        } else {
+            return false; // Invalid character in the string
+        }
+    }
+    
+    // Check if all characters have been marked
+    for (char ch : input) {
+        if (ch == 'a' || ch == 'b' || ch == 'c') return false; // There are unmarked characters
+    }
+    return true;
+}
+
+int main() {
+    string input;
+    cout << "Enter a string: ";
+    cin >> input;
+
+    if (turingMachine_ABC(input)) {
+        cout << "Accepted\n";
+    } else {
+        cout << "Rejected\n";
+    }
+
+    return 0;
+}
