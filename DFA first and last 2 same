@@ -1,42 +1,17 @@
-def fa_accepts(input_string):
-    # Initialize the state
-    state = 0
-    # Check the length of the string
-    if len(input_string) < 4:
-        print("The string must have a length of at least 4.")
-        return False
-    
-    # Extract the first two and last two characters
-    first_two = input_string[:2]
-    last_two = input_string[-2:]
-    
-    # Process each character and show the state
-    for i, char in enumerate(input_string):
-        print(f"Current state: {state}, Input: {char}")
-    
-        if state == 0:
-            if i < 2:
-                state = 0 # Still in the first two characters
-            else:
-                state = 1 # Moving to check the last two characters
-        elif state == 1:
-            # Check if we are at the end of the string
-            if i == len(input_string) - 1:
-                # Final check
-                if first_two == last_two:
-    
-                print(f"Final state: {state}")
-                return True
-    
-    print(f"Final state: {state}")
-    return False
+#include <iostream>
+#include <string>
+using namespace std;
 
-if __name__ == "__main__":
-    user_input = input("Enter a string (composed of 'a' and 'b') of length ≥ 4: ")
-    
-    # Validate input characters
-    if any(char not in {'a', 'b'} for char in user_input):
-        print("Invalid input! The string can only contain 'a' and 'b'.")
-    else:
-        result = fa_accepts(user_input)
-        print(f"The string '{user_input}' is {'accepted' if result else 'not accepted'} by the FA.")
+bool firstTwoEqualLastTwo(const string &input) {
+    if (input.length() < 4) return false;
+    return input.substr(0, 2) == input.substr(input.size() - 2);
+}
+
+int main() {
+    string input;
+    cout << "Enter a string: ";
+    cin >> input;
+    if (firstTwoEqualLastTwo(input)) cout << "Accepted\n";
+    else cout << "Rejected\n";
+    return 0;
+}
