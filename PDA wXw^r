@@ -1,0 +1,56 @@
+class PDA:
+    def __init__(self):
+        # Initialize states, stack, and transitions
+        self.initial_state = 'q0'
+        self.final_state = 'q_accept'
+        self.reject_state = 'q_reject'
+        self.stack = ['Z0']  # Stack starts with the initial symbol Z0
+
+    def run(self, input_string):
+        current_state = self.initial_state
+        stack = ['Z0']  # Initialize stack with Z0
+
+        # Process the input string
+        for symbol in input_string:
+            print(f"Processing: {symbol}, Current state: {current_state}, Stack: {stack}")
+
+            # Transition rules
+            if current_state == 'q0':  # Processing the first part (w)
+                if symbol in ['a', 'b']:  # Push to stack for w
+                    stack.append(symbol)
+                elif symbol == 'X':  # Separator between w and w^r
+                    current_state = 'q1'  # Move to state q1 to process w^r
+                else:
+                    current_state = self.reject_state  # Invalid symbol, reject
+
+            elif current_state == 'q1':  # Processing the second part (w^r)
+                if symbol == 'a' and stack[-1] == 'a':  # Match 'a' in w^r
+                    stack.pop()
+                elif symbol == 'b' and stack[-1] == 'b':  # Match 'b' in w^r
+                    stack.pop()
+                else:
+                    current_state = self.reject_state  # Invalid transition, reject
+
+            # If rejected at any point, break the loop
+            if current_state == self.reject_state:
+                print(f"Rejecting: Invalid transition at symbol {symbol}")
+                return "String is rejected."
+
+        # After processing all input symbols, check if the string is accepted
+        if current_state == 'q1' and stack == ['Z0']:  # Stack should be back to the initial symbol Z0
+            print("String is accepted.")
+            return "String is accepted."
+        else:
+            print("String is rejected.")
+            return "String is rejected."
+
+
+# Create the PDA
+pda = PDA()
+
+# Test the PDA with different strings
+test_strings = ["abXba"]
+
+for test_string in test_strings:
+    print(f"Input: '{test_string}' => {pda.run(test_string)}")
+    print('---')
