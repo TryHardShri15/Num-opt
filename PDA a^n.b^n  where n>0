@@ -1,38 +1,41 @@
-class PDA:
-    def __init__(self):
-        self.stack = []  # Stack to manage symbols
-        self.state = "q0"  # Start state
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
 
-    def process(self, input_string):
-        for char in input_string:
-            if self.state == "q0":
-                if char == "a":
-                    self.stack.append("a")  # Push 'a' to the stack
-                elif char == "b":
-                    if self.stack and self.stack[-1] == "a":
-                        self.stack.pop()  # Pop 'a' for each 'b'
-                        self.state = "q1"  # Move to state q1
-                    else:
-                        return False  # Invalid transition
-                else:
-                    return False  # Invalid character
-            elif self.state == "q1":
-                if char == "b":
-                    if self.stack and self.stack[-1] == "a":
-                        self.stack.pop()  # Continue popping for 'b'
-                    else:
-                        return False  # Invalid transition
-                else:
-                    return False  # Invalid character
-        return self.state == "q1" and not self.stack  # Accept if stack is empty
+bool pda_abn(const string &input) {
+    stack<char> st;
 
-# Testing the PDA
-def main():
-    pda = PDA()
-    test_cases = ["aabb", "aaabbb", "ab", "abb", "aaaabbbb", ""]  # Test inputs
-    for test in test_cases:
-        result = pda.process(test)
-        print(f"Input: {test} -> {'Accepted' if result else 'Rejected'}")
+    // Push 'a' onto stack for every 'a' encountered
+    for (char ch : input) {
+        if (ch == 'a') {
+            st.push(ch);
+        }
+        else if (ch == 'b') {
+            if (st.empty()) {
+                return false; // Reject if there is no 'a' to match 'b'
+            }
+            st.pop(); // Pop 'a' for each 'b'
+        }
+        else {
+            return false; // Reject if character is not 'a' or 'b'
+        }
+    }
 
-if __name__ == "__main__":
-    main()
+    // Accept if the stack is empty (all 'a's matched with 'b's)
+    return st.empty();
+}
+
+int main() {
+    string input;
+    cout << "Enter a string: ";
+    cin >> input;
+
+    if (pda_abn(input)) {
+        cout << "Accepted\n";
+    } else {
+        cout << "Rejected\n";
+    }
+
+    return 0;
+}
