@@ -1,0 +1,17 @@
+def main():
+    w = input("Enter a string: ")
+    State1(w, 0, 0, 0) # Starting state with even a's and even b's
+def State1(w, i, a_count, b_count):
+    print("State 1")
+    if i == len(w):
+        if a_count % 2 == 0 and b_count % 2 == 0:
+            print("String is accepted")
+    
+        else:
+            print("String is rejected")
+        return
+    elif w[i] == 'a':
+        State1(w, i+1, a_count + 1, b_count)
+    else:
+        State1(w, i+1, a_count, b_count + 1)
+main()
