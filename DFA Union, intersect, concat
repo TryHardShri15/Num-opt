@@ -1,0 +1,44 @@
+"""Union Of L1 and L2: """
+
+def main():
+    w = input("Enter a string: ")
+    if L1(w) or L2(w): # Union: either L1 or L2 accepts
+        print("String is accepted by Union of L1 and L2")
+    else:
+        print("String is rejected by Union of L1 and L2")
+def L1(w):
+    return len(w) >= 4 and w[:2] == w[-2:] # Language L1 condition
+def L2(w):
+    return w.startswith('a') and w.endswith('b') # Language L2 condition
+main()
+
+
+"""Intersection Of L1 and L2: """
+
+def main():
+    w = input("Enter a string: ")
+    if L1(w) and L2(w): # Intersection: both L1 and L2 accept
+        print("String is accepted by Intersection of L1 and L2")
+    else:
+        print("String is rejected by Intersection of L1 and L2")
+def L1(w):
+    return len(w) >= 4 and w[:2] == w[-2:] # Language L1 condition
+def L2(w):
+    return w.startswith('a') and w.endswith('b') # Language L2 condition
+main()
+
+
+"""Concatenation Of L1 and L2: """
+
+def main():
+    w = input("Enter a string: ")
+    for i in range(1, len(w)): # Try splitting at every possible point
+        if L1(w[:i]) and L2(w[i:]): # First part in L1, second part in L2
+            print("String is accepted by Concatenation of L1 and L2")
+            return
+    print("String is rejected by Concatenation of L1 and L2")
+def L1(w):
+    return len(w) >= 4 and w[:2] == w[-2:] # Language L1 condition
+def L2(w):
+    return w.startswith('a') and w.endswith('b') # Language L2 condition
+main()
