@@ -1,0 +1,23 @@
+def main():
+    w = input("Enter a string: ")
+    State1(w, 0)
+
+def State1(w, i):
+    print("State 1")
+    if i == len(w):
+        print("String is rejected")
+        return
+    elif w[i] == 'a':
+        State2(w, i+1)
+    else:
+        print("String is rejected")
+def State2(w, i):
+    print("State 2")
+    if i == len(w):
+        print("String is rejected")
+        return
+    elif w[i] == 'b':
+        print("String is accepted")
+    else:
+        State2(w, i+1)
+main()
