@@ -1,0 +1,50 @@
+class FiniteAutomaton:
+    def __init__(self, initial_state, final_states, transition_function):
+        self.current_state = initial_state
+        self.final_states = final_states
+        self.transition_function = transition_function
+
+    def process(self, input_string):
+        i = 0
+        while i < len(input_string):
+            # Get the current symbol in the input string
+            symbol = input_string[i]
+            
+            # If there's no transition defined for this state and symbol, reject
+            if (self.current_state, symbol) not in self.transition_function:
+                print(f"String is rejected at state {self.current_state} on symbol {symbol}")
+                return
+            
+            # Get the next state based on the current state and symbol
+            self.current_state = self.transition_function[(self.current_state, symbol)]
+            print(f"Transitioned to state {self.current_state} on symbol {symbol}")
+            i += 1
+        
+        # Check if the final state is one of the accepted final states
+        if self.current_state in self.final_states:
+            print("String is accepted")
+        else:
+            print("String is rejected")
+
+
+# Example usage: 
+# Defining a Finite Automaton with states, transitions, and final states
+
+# States are numbered, and 'final states' are the accepting ones
+initial_state = 1
+final_states = {2}  # Final state is 2, meaning it accepts if it ends in state 2
+transition_function = {
+    (1, 'b'): 1,  # From state 1, on 'b' it stays in state 1
+    (1, 'a'): 2,  # From state 1, on 'a' it transitions to state 2
+    (2, 'b'): 1,  # From state 2, on 'b' it goes back to state 1
+    (2, 'a'): 3,  # From state 2, on 'a' it goes to state 3 (which is a rejecting state)
+    (3, 'a'): 3,  # State 3 stays in state 3 for both 'a' and 'b'
+    (3, 'b'): 3,
+}
+
+# Creating the FA object
+fa = FiniteAutomaton(initial_state, final_states, transition_function)
+
+# Testing with some strings
+fa.process('abbb')  # Should print accepted or rejected based on the transitions
+fa.process('aabb')  # Should print accepted or rejected
